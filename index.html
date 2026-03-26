@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- =============================================
+       META TAGS DE SEO
+  ============================================= -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Simulador de financiamento online gratuito. Calcule parcelas, juros e valor total com a fórmula PMT. Simule financiamento de imóveis, carros e muito mais." />
+  <meta name="keywords" content="simulador financiamento, calculadora de parcelas, calcular juros, PMT, simulação de crédito, financiamento imóvel, financiamento carro" />
+  <meta name="author" content="SimulaFin" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph (redes sociais) -->
+  <meta property="og:title" content="SimulaFin – Simulador de Financiamento Online Gratuito" />
+  <meta property="og:description" content="Calcule parcelas, juros totais e valor total pago em segundos. Rápido, grátis e sem cadastro." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pt_BR" />
+
+  <title>SimulaFin – Simulador de Financiamento Online Gratuito</title>
+
+  <!-- =============================================
+       FONTES
+  ============================================= -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <!-- =============================================
+       ESTILOS
+  ============================================= -->
+  <style>
+    /* ─── VARIÁVEIS ──────────────────────────────── */
+    :root {
+      --green-900: #0d2b1f;
+      --green-700: #155e3b;
+      --green-500: #1f8a58;
+      --green-400: #27ae71;
+      --green-200: #a7e8c8;
+      --green-100: #d4f5e5;
+      --green-50:  #f0fcf6;
+
+      --gold:      #c9a227;
+      --gold-light:#f5e199;
+
+      --neutral-900: #111827;
+      --neutral-700: #374151;
+      --neutral-500: #6b7280;
+      --neutral-200: #e5e7eb;
+      --neutral-100: #f3f4f6;
+      --neutral-50:  #f9fafb;
+      --white:       #ffffff;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 22px;
+
+      --shadow-card: 0 4px 24px rgba(21, 94, 59, 0.10);
+      --shadow-hover: 0 8px 36px rgba(21, 94, 59, 0.18);
+
+      --transition: 0.22s ease;
+    }
+
+    /* ─── RESET ──────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Sora', sans-serif;
+      background: var(--neutral-50);
+      color: var(--neutral-900);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: var(--green-500); text-decoration: none; }
+    a:hover { color: var(--green-400); }
+
+    /* ─── UTILITÁRIOS ─────────────────────────────── */
+    .container {
+      width: 100%;
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green-500);
+      background: var(--green-100);
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.5rem, 4vw, 2.1rem);
+      font-weight: 600;
+      color: var(--neutral-900);
+      line-height: 1.25;
+    }
+
+    .section-sub {
+      color: var(--neutral-500);
+      font-size: 1rem;
+      margin-top: 8px;
+    }
+
+    /* ─── HEADER ─────────────────────────────────── */
+    header {
+      background: var(--green-900);
+      padding: 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 62px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--white);
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--green-400);
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      font-size: 1.1rem;
+    }
+
+    .logo span { color: var(--gold); }
+
+    nav {
+      display: flex;
+      gap: 28px;
+    }
+
+    nav a {
+      color: var(--green-200);
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: color var(--transition);
+    }
+
+    nav a:hover { color: var(--white); }
+
+    @media (max-width: 600px) { nav { display: none; } }
+
+    /* ─── HERO ───────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, var(--green-900) 0%, var(--green-700) 100%);
+      padding: 60px 0 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      top: -200px;
+      right: -100px;
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      bottom: -120px;
+      left: -60px;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: var(--green-200);
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(2rem, 6vw, 3.4rem);
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .hero h1 em {
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    .hero p {
+      color: var(--green-200);
+      font-size: 1.05rem;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ─── AD BANNER (TOPO) ───────────────────────── */
+    .ad-banner {
+      background: var(--white);
+      border: 2px dashed var(--neutral-200);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--neutral-500);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      gap: 8px;
+    }
+
+    .ad-banner-top {
+      height: 90px;
+      margin: 28px 0 0;
+    }
+
+    .ad-banner-mid {
+      height: 280px;
+      margin: 0;
+    }
+
+    .ad-banner-bottom {
+      height: 90px;
+    }
+
+    /* ─── CALCULADORA ─────────────────────────────── */
+    .calc-section {
+      padding: 60px 0;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-top: 36px;
+    }
+
+    @media (max-width: 768px) {
+      .calc-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Card genérico */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-card);
+      border: 1px solid rgba(21,94,59,0.06);
+      transition: box-shadow var(--transition);
+    }
+
+    .card:hover { box-shadow: var(--shadow-hover); }
+
+    /* Formulário */
+    .form-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--neutral-900);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-title-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--green-100);
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--neutral-700);
+      margin-bottom: 6px;
+      letter-spacing: 0.01em;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-prefix {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--neutral-500);
+      pointer-events: none;
+    }
+
+    input[type="number"],
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px 12px 38px;
+      border: 1.5px solid var(--neutral-200);
+      border-radius: var(--radius-sm);
+      font-family: 'Sora', sans-serif;
+      font-size: 0.95rem;
+      color: var(--neutral-900);
+      background: var(--neutral-50);
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+      -moz-appearance: textfield;
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+    input[type="number"]:focus,
+    input[type="text"]:focus {
+      border-color: var(--green-400);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(31,138,88,0.12);
+    }
+
+    .input-no-prefix { padding-left: 14px !important; }
+
+    /* Botão calcular */
+    .btn-calc {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, var(--green-500), var(--green-400));
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: 'Sora', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition);
+      letter-spacing: 0.01em;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-calc:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(31,138,88,0.32);
+    }
+
+    .btn-calc:active { transform: translateY(0); }
+
+    /* Resultados */
+    .results-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--neutral-900);
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .result-main {
+      background: linear-gradient(135deg, var(--green-700), var(--green-500));
+      border-radius: var(--radius-md);
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .result-main-label {
+      color: var(--green-100);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .result-main-value {
+      color: var(--white);
+      font-family: 'Lora', serif;
+      font-size: 2.2rem;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .result-main-sub {
+      color: var(--green-200);
+      font-size: 0.82rem;
+      margin-top: 4px;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .result-item {
+      background: var(--neutral-50);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      border: 1px solid var(--neutral-200);
+    }
+
+    .result-item-label {
+      font-size: 0.75rem;
+      color: var(--neutral-500);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 4px;
+    }
+
+    .result-item-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--neutral-900);
+    }
+
+    .result-item-value.danger { color: #c0392b; }
+    .result-item-value.success { color: var(--green-500); }
+
+    /* Barra de composição */
+    .composition-bar {
+      background: var(--neutral-200);
+      border-radius: 100px;
+      height: 8px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .composition-fill {
+      height: 100%;
+      border-radius: 100px;
+      background: linear-gradient(90deg, var(--green-400), var(--gold));
+      transition: width 0.6s cubic-bezier(.4,0,.2,1);
+      width: 0;
+    }
+
+    .composition-legend {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--neutral-500);
+    }
+
+    /* Estado vazio */
+    .results-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 280px;
+      gap: 12px;
+      color: var(--neutral-500);
+      text-align: center;
+    }
+
+    .results-empty-icon { font-size: 3rem; }
+    .results-empty p { font-size: 0.9rem; }
+
+    .results-content { display: none; }
+
+    /* ─── SEÇÃO "COMO FUNCIONA" ───────────────────── */
+    .how-section {
+      padding: 60px 0;
+      background: var(--white);
+    }
+
+    .how-header { margin-bottom: 44px; }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 700px) {
+      .steps-grid { grid-template-columns: 1fr; }
+    }
+
+    .step-card {
+      padding: 28px;
+      border-radius: var(--radius-md);
+      background: var(--neutral-50);
+      border: 1px solid var(--neutral-200);
+      position: relative;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .step-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-card);
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      background: var(--green-900);
+      color: var(--white);
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 16px;
+    }
+
+    .step-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--neutral-900);
+      margin-bottom: 8px;
+    }
+
+    .step-card p {
+      font-size: 0.88rem;
+      color: var(--neutral-500);
+      line-height: 1.65;
+    }
+
+    /* Fórmula PMT */
+    .pmt-box {
+      margin-top: 40px;
+      background: var(--green-900);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      color: var(--white);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    @media (max-width: 700px) {
+      .pmt-box { grid-template-columns: 1fr; }
+    }
+
+    .pmt-formula {
+      font-family: 'Lora', serif;
+      font-size: 1.4rem;
+      color: var(--gold-light);
+      background: rgba(255,255,255,0.07);
+      padding: 20px 24px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255,255,255,0.12);
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+
+    .pmt-formula small {
+      display: block;
+      font-family: 'Sora', sans-serif;
+      font-size: 0.75rem;
+      color: var(--green-200);
+      margin-top: 8px;
+      font-style: normal;
+    }
+
+    .pmt-info h3 {
+      font-family: 'Lora', serif;
+      font-size: 1.2rem;
+      margin-bottom: 14px;
+      color: var(--green-100);
+    }
+
+    .pmt-vars { list-style: none; }
+
+    .pmt-vars li {
+      display: flex;
+      gap: 10px;
+      font-size: 0.87rem;
+      margin-bottom: 8px;
+      color: var(--green-200);
+    }
+
+    .pmt-vars li strong {
+      color: var(--gold-light);
+      min-width: 28px;
+    }
+
+    /* ─── AD SLOT INTERMEDIÁRIO ───────────────────── */
+    .ad-mid-section {
+      padding: 40px 0;
+      background: var(--neutral-50);
+    }
+
+    /* ─── FAQ ─────────────────────────────────────── */
+    .faq-section {
+      padding: 60px 0;
+      background: var(--white);
+    }
+
+    .faq-header { margin-bottom: 36px; }
+
+    .faq-list {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .faq-item {
+      border: 1.5px solid var(--neutral-200);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: border-color var(--transition);
+    }
+
+    .faq-item.open { border-color: var(--green-400); }
+
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 20px 24px;
+      text-align: left;
+      font-family: 'Sora', sans-serif;
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: var(--neutral-900);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      transition: background var(--transition);
+    }
+
+    .faq-question:hover { background: var(--neutral-50); }
+
+    .faq-item.open .faq-question { background: var(--green-50); color: var(--green-700); }
+
+    .faq-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: var(--neutral-100);
+      display: grid;
+      place-items: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      transition: background var(--transition), transform var(--transition);
+      color: var(--neutral-500);
+    }
+
+    .faq-item.open .faq-icon {
+      background: var(--green-100);
+      color: var(--green-600);
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.36s cubic-bezier(.4,0,.2,1), padding var(--transition);
+      padding: 0 24px;
+      font-size: 0.9rem;
+      color: var(--neutral-500);
+      line-height: 1.7;
+    }
+
+    .faq-item.open .faq-answer {
+      max-height: 300px;
+      padding: 4px 24px 20px;
+    }
+
+    /* ─── FOOTER ──────────────────────────────────── */
+    footer {
+      background: var(--green-900);
+      padding: 40px 0 28px;
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      text-align: center;
+    }
+
+    .footer-logo {
+      color: var(--white);
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .footer-logo span { color: var(--gold); }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footer-links a {
+      color: var(--green-200);
+      font-size: 0.85rem;
+      transition: color var(--transition);
+    }
+
+    .footer-links a:hover { color: var(--white); }
+
+    .footer-copy {
+      color: var(--green-200);
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+
+    .footer-disclaimer {
+      color: var(--green-200);
+      font-size: 0.75rem;
+      opacity: 0.5;
+      max-width: 520px;
+      line-height: 1.6;
+    }
+
+    /* ─── TOAST ERRO ─────────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: #c0392b;
+      color: var(--white);
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 14px 20px;
+      border-radius: var(--radius-md);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+      z-index: 999;
+      transform: translateY(80px);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 320px;
+    }
+
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ─── ANIMAÇÕES ───────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade-up {
+      animation: fadeUp 0.55s ease both;
+    }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+
+    /* ─── HIGHLIGHT RESULTADO ─────────────────────── */
+    @keyframes highlight {
+      0%   { background: var(--green-100); }
+      100% { background: transparent; }
+    }
+    .highlight { animation: highlight 1.2s ease forwards; }
+  </style>
+</head>
+
+<body>
+
+  <!-- =============================================
+       HEADER
+  ============================================= -->
+  <header>
+    <div class="container header-inner">
+      <a href="#" class="logo" aria-label="SimulaFin – início">
+        <div class="logo-icon" aria-hidden="true">💰</div>
+        Simula<span>Fin</span>
+      </a>
+      <nav aria-label="Navegação principal">
+        <a href="#calculadora">Calculadora</a>
+        <a href="#como-funciona">Como Funciona</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- =============================================
+       HERO
+  ============================================= -->
+  <section class="hero" aria-label="Apresentação">
+    <div class="container hero-content animate-fade-up">
+      <div class="hero-badge" aria-hidden="true">✨ 100% gratuito, sem cadastro</div>
+      <h1>Simule seu <em>financiamento</em><br>em segundos</h1>
+      <p>Calcule parcelas, juros totais e valor pago com a fórmula PMT — a mesma usada pelos bancos.</p>
+
+      <!-- AD – Topo (728x90) -->
+      <div class="ad-banner ad-banner-top" role="complementary" aria-label="Espaço publicitário">
+        <!-- Cole aqui o código do Google AdSense (728x90 leaderboard) -->
+        📢 Anúncio – 728 × 90
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       CALCULADORA
+  ============================================= -->
+  <section class="calc-section" id="calculadora" aria-label="Simulador de financiamento">
+    <div class="container">
+      <div class="animate-fade-up">
+        <span class="section-tag">Simulador</span>
+        <h2 class="section-title">Calculadora de Financiamento</h2>
+        <p class="section-sub">Preencha os campos e clique em <strong>Calcular</strong>.</p>
+      </div>
+
+      <div class="calc-grid">
+
+        <!-- FORMULÁRIO -->
+        <div class="card animate-fade-up delay-1">
+          <div class="form-title">
+            <div class="form-title-icon" aria-hidden="true">📋</div>
+            Dados do Financiamento
+          </div>
+
+          <form id="finForm" novalidate>
+
+            <!-- Valor do bem -->
+            <div class="form-group">
+              <label for="valorBem">Valor do Bem</label>
+              <div class="input-wrap">
+                <span class="input-prefix" aria-hidden="true">R$</span>
+                <input
+                  type="number"
+                  id="valorBem"
+                  placeholder="150.000,00"
+                  min="1"
+                  step="any"
+                  aria-label="Valor do bem em reais"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Valor da entrada -->
+            <div class="form-group">
+              <label for="valorEntrada">Valor da Entrada</label>
+              <div class="input-wrap">
+                <span class="input-prefix" aria-hidden="true">R$</span>
+                <input
+                  type="number"
+                  id="valorEntrada"
+                  placeholder="30.000,00"
+                  min="0"
+                  step="any"
+                  aria-label="Valor da entrada em reais"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Taxa de juros -->
+            <div class="form-group">
+              <label for="taxa">Taxa de Juros Mensal</label>
+              <div class="input-wrap">
+                <span class="input-prefix" aria-hidden="true">%</span>
+                <input
+                  type="number"
+                  id="taxa"
+                  placeholder="1,20"
+                  min="0.01"
+                  step="any"
+                  aria-label="Taxa de juros mensal em porcentagem"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Número de parcelas -->
+            <div class="form-group">
+              <label for="parcelas">Número de Parcelas</label>
+              <div class="input-wrap">
+                <span class="input-prefix" aria-hidden="true">#</span>
+                <input
+                  type="number"
+                  id="parcelas"
+                  placeholder="48"
+                  min="1"
+                  max="480"
+                  step="1"
+                  aria-label="Número de parcelas"
+                  required
+                />
+              </div>
+            </div>
+
+            <button type="submit" class="btn-calc" aria-label="Calcular financiamento">
+              <span aria-hidden="true">⚡</span> Calcular Financiamento
+            </button>
+          </form>
+        </div>
+
+        <!-- RESULTADOS -->
+        <div class="card animate-fade-up delay-2" aria-live="polite" aria-label="Resultados do cálculo">
+          <div class="results-title">
+            <div class="form-title-icon" aria-hidden="true">📊</div>
+            Resultado da Simulação
+          </div>
+
+          <!-- Estado vazio -->
+          <div class="results-empty" id="resultsEmpty">
+            <div class="results-empty-icon" aria-hidden="true">🧮</div>
+            <p>Preencha os dados ao lado<br>para ver a simulação.</p>
+          </div>
+
+          <!-- Resultados preenchidos -->
+          <div class="results-content" id="resultsContent">
+            <div class="result-main">
+              <div class="result-main-label">Parcela Mensal (PMT)</div>
+              <div class="result-main-value" id="resParcela">–</div>
+              <div class="result-main-sub" id="resParcelaInfo">– parcelas mensais</div>
+            </div>
+
+            <div class="results-grid">
+              <div class="result-item">
+                <div class="result-item-label">Total Pago</div>
+                <div class="result-item-value" id="resTotalPago">–</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">Total em Juros</div>
+                <div class="result-item-value danger" id="resTotalJuros">–</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">Valor Financiado</div>
+                <div class="result-item-value success" id="resValorFin">–</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">Taxa Mensal</div>
+                <div class="result-item-value" id="resTaxa">–</div>
+              </div>
+            </div>
+
+            <!-- Barra de composição -->
+            <div style="margin-top:4px;">
+              <div class="composition-bar" role="progressbar" aria-label="Proporção juros × principal">
+                <div class="composition-fill" id="compBar"></div>
+              </div>
+              <div class="composition-legend">
+                <span id="compLegLeft">Principal: –</span>
+                <span id="compLegRight">Juros: –</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /calc-grid -->
+    </div>
+  </section>
+
+  <!-- =============================================
+       COMO FUNCIONA
+  ============================================= -->
+  <section class="how-section" id="como-funciona" aria-label="Como funciona o financiamento">
+    <div class="container">
+      <div class="how-header animate-fade-up">
+        <span class="section-tag">Entenda</span>
+        <h2 class="section-title">Como funciona o financiamento?</h2>
+        <p class="section-sub">Financiamento usa juros compostos — entenda cada etapa.</p>
+      </div>
+
+      <div class="steps-grid animate-fade-up delay-1">
+        <article class="step-card">
+          <div class="step-number" aria-hidden="true">1</div>
+          <h3>Valor Financiado</h3>
+          <p>É o preço do bem descontada a entrada. Quanto maior a entrada, menor o valor financiado — e menos juros você paga ao longo do contrato.</p>
+        </article>
+        <article class="step-card">
+          <div class="step-number" aria-hidden="true">2</div>
+          <h3>Fórmula PMT</h3>
+          <p>A parcela é calculada pela fórmula PMT (Payment), que distribui o valor financiado + juros em parcelas iguais durante todo o prazo do contrato.</p>
+        </article>
+        <article class="step-card">
+          <div class="step-number" aria-hidden="true">3</div>
+          <h3>Juros Compostos</h3>
+          <p>Nas parcelas iniciais, a maior parte é composta por juros. Com o passar do tempo, você paga mais principal e menos juros — isso se chama amortização.</p>
+        </article>
+      </div>
+
+      <!-- Bloco da fórmula PMT -->
+      <div class="pmt-box animate-fade-up delay-2" aria-label="Fórmula PMT explicada">
+        <div class="pmt-formula" aria-label="Fórmula matemática PMT">
+          PMT = PV × [ i × (1+i)ⁿ ] ÷ [ (1+i)ⁿ − 1 ]
+          <small>Fórmula do sistema PRICE de amortização</small>
+        </div>
+        <div class="pmt-info">
+          <h3>Legenda da fórmula</h3>
+          <ul class="pmt-vars">
+            <li><strong>PMT</strong> Valor da parcela mensal</li>
+            <li><strong>PV</strong> Valor presente (valor financiado)</li>
+            <li><strong>i</strong> Taxa de juros mensal (ex: 1,2% = 0,012)</li>
+            <li><strong>n</strong> Número de parcelas (meses)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       AD INTERMEDIÁRIO (300x250)
+  ============================================= -->
+  <div class="ad-mid-section" role="complementary" aria-label="Espaço publicitário">
+    <div class="container" style="display:flex; justify-content:center;">
+      <div class="ad-banner ad-banner-mid" style="width:300px;">
+        <!-- Cole aqui o código do Google AdSense (300x250 medium rectangle) -->
+        📢 Anúncio – 300 × 250
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================================
+       FAQ
+  ============================================= -->
+  <section class="faq-section" id="faq" aria-label="Perguntas frequentes">
+    <div class="container">
+      <div class="faq-header animate-fade-up">
+        <span class="section-tag">FAQ</span>
+        <h2 class="section-title">Perguntas Frequentes</h2>
+        <p class="section-sub">Tire suas dúvidas sobre financiamentos.</p>
+      </div>
+
+      <div class="faq-list animate-fade-up delay-1" role="list">
+
+        <div class="faq-item" role="listitem">
+          <button
+            class="faq-question"
+            aria-expanded="false"
+            aria-controls="faq1-answer"
+            onclick="toggleFaq(this)"
+          >
+            Qual a diferença entre taxa de juros nominal e efetiva?
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer" id="faq1-answer" role="region">
+            A taxa nominal é a informada no contrato (ex.: 1,2% ao mês). A taxa efetiva considera a capitalização dos juros ao longo do tempo. Em financiamentos mensais com sistema PRICE, a taxa mensal nominal é aplicada diretamente ao saldo devedor, sem capitalização extra — portanto, taxa nominal e efetiva mensal coincidem. Já na comparação anual, 1,2% a.m. equivale a aproximadamente 15,39% a.a. efetivos (e não 14,4% nominais).
+          </div>
+        </div>
+
+        <div class="faq-item" role="listitem">
+          <button
+            class="faq-question"
+            aria-expanded="false"
+            aria-controls="faq2-answer"
+            onclick="toggleFaq(this)"
+          >
+            Vale a pena dar uma entrada maior para reduzir as parcelas?
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer" id="faq2-answer" role="region">
+            Quase sempre sim. Uma entrada maior reduz o valor financiado (PV), e como os juros incidem sobre esse saldo, o total pago em juros cai proporcionalmente. Tente simular dois cenários aqui mesmo — com 20% e 30% de entrada — e compare a diferença total ao final. Você verá que economias de dezenas de milhares de reais são comuns em financiamentos imobiliários de longo prazo.
+          </div>
+        </div>
+
+        <div class="faq-item" role="listitem">
+          <button
+            class="faq-question"
+            aria-expanded="false"
+            aria-controls="faq3-answer"
+            onclick="toggleFaq(this)"
+          >
+            Posso usar esta calculadora para financiamento de imóveis e veículos?
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer" id="faq3-answer" role="region">
+            Sim! A fórmula PMT é universal — ela é usada para qualquer financiamento com parcelas fixas (sistema PRICE). Seja para imóvel, carro, moto ou bens de consumo, basta inserir os valores corretos. Atenção: financiamentos pelo sistema SAC (parcelas decrescentes) usam outra metodologia — para esses casos, as parcelas variam mês a mês e esta calculadora não se aplica diretamente.
+          </div>
+        </div>
+
+      </div><!-- /faq-list -->
+    </div>
+  </section>
+
+  <!-- =============================================
+       FOOTER
+  ============================================= -->
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-logo">Simula<span>Fin</span></div>
+
+      <!-- AD Footer (728x90) -->
+      <div class="ad-banner ad-banner-bottom" style="width:100%; max-width:728px;" role="complementary" aria-label="Espaço publicitário">
+        <!-- Cole aqui o código do Google AdSense (728x90 leaderboard) -->
+        📢 Anúncio – 728 × 90
+      </div>
+
+      <nav class="footer-links" aria-label="Links do rodapé">
+        <a href="#calculadora">Calculadora</a>
+        <a href="#como-funciona">Como Funciona</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+
+      <p class="footer-disclaimer">
+        As simulações são meramente indicativas e não constituem oferta de crédito. Consulte sempre sua instituição financeira para condições reais.
+      </p>
+
+      <p class="footer-copy">
+        &copy; <span id="anoAtual"></span> SimulaFin — Todos os direitos reservados.
+      </p>
+    </div>
+  </footer>
+
+  <!-- =============================================
+       TOAST DE ERRO
+  ============================================= -->
+  <div class="toast" id="toast" role="alert" aria-live="assertive">
+    <span aria-hidden="true">⚠️</span>
+    <span id="toastMsg"></span>
+  </div>
+
+  <!-- =============================================
+       JAVASCRIPT
+  ============================================= -->
+  <script>
+    // ─── ANO NO FOOTER ─────────────────────────────
+    document.getElementById('anoAtual').textContent = new Date().getFullYear();
+
+    // ─── UTILITÁRIOS ───────────────────────────────
+
+    /**
+     * Formata um número como moeda brasileira (R$).
+     * @param {number} valor
+     * @returns {string}
+     */
+    function formatBRL(valor) {
+      return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    /**
+     * Exibe um toast de erro por 3,5 segundos.
+     * @param {string} msg
+     */
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    // ─── CÁLCULO PMT ───────────────────────────────
+
+    /**
+     * Calcula a parcela pelo sistema PRICE (PMT).
+     *
+     * Fórmula: PMT = PV × [ i × (1+i)^n ] / [ (1+i)^n − 1 ]
+     *
+     * @param {number} pv   - Valor financiado (Present Value)
+     * @param {number} i    - Taxa de juros mensal (decimal, ex: 0.012)
+     * @param {number} n    - Número de parcelas
+     * @returns {number}    - Valor da parcela
+     */
+    function calcPMT(pv, i, n) {
+      const fator = Math.pow(1 + i, n);
+      return pv * (i * fator) / (fator - 1);
+    }
+
+    // ─── FORMULÁRIO ────────────────────────────────
+
+    document.getElementById('finForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      /* Captura os valores */
+      const valorBem    = parseFloat(document.getElementById('valorBem').value);
+      const valorEntrada = parseFloat(document.getElementById('valorEntrada').value) || 0;
+      const taxaPerc    = parseFloat(document.getElementById('taxa').value);
+      const numParcelas = parseInt(document.getElementById('parcelas').value, 10);
+
+      /* Validações */
+      if (isNaN(valorBem) || valorBem <= 0) {
+        showToast('Informe um valor do bem válido.');
+        return;
+      }
+      if (valorEntrada < 0) {
+        showToast('O valor da entrada não pode ser negativo.');
+        return;
+      }
+      if (valorEntrada >= valorBem) {
+        showToast('A entrada deve ser menor que o valor do bem.');
+        return;
+      }
+      if (isNaN(taxaPerc) || taxaPerc <= 0) {
+        showToast('Informe uma taxa de juros válida (ex.: 1,2).');
+        return;
+      }
+      if (isNaN(numParcelas) || numParcelas < 1 || numParcelas > 480) {
+        showToast('Informe um número de parcelas entre 1 e 480.');
+        return;
+      }
+
+      /* Cálculos */
+      const valorFinanciado = valorBem - valorEntrada;   // PV
+      const taxaMensal      = taxaPerc / 100;             // i (decimal)
+      const parcela         = calcPMT(valorFinanciado, taxaMensal, numParcelas);
+      const totalPago       = parcela * numParcelas + valorEntrada;
+      const totalJuros      = totalPago - valorBem;
+      const percJuros       = (totalJuros / totalPago) * 100;
+
+      /* Exibição dos resultados */
+      document.getElementById('resParcela').textContent = formatBRL(parcela);
+      document.getElementById('resParcelaInfo').textContent =
+        `${numParcelas} parcelas mensais iguais`;
+
+      document.getElementById('resTotalPago').textContent  = formatBRL(totalPago);
+      document.getElementById('resTotalJuros').textContent = formatBRL(totalJuros);
+      document.getElementById('resValorFin').textContent   = formatBRL(valorFinanciado);
+      document.getElementById('resTaxa').textContent       = taxaPerc.toFixed(2) + '% a.m.';
+
+      /* Barra de composição */
+      const percPrincipal = 100 - percJuros;
+      document.getElementById('compBar').style.width = percPrincipal.toFixed(1) + '%';
+      document.getElementById('compLegLeft').textContent =
+        `Principal: ${percPrincipal.toFixed(1)}%`;
+      document.getElementById('compLegRight').textContent =
+        `Juros: ${percJuros.toFixed(1)}%`;
+
+      /* Mostra resultados e oculta estado vazio */
+      document.getElementById('resultsEmpty').style.display  = 'none';
+      document.getElementById('resultsContent').style.display = 'block';
+
+      /* Efeito visual de highlight no resultado principal */
+      const main = document.querySelector('.result-main');
+      main.classList.remove('highlight');
+      void main.offsetWidth; // reflow para reiniciar animação
+      main.classList.add('highlight');
+
+      /* Scroll suave para os resultados em mobile */
+      if (window.innerWidth < 768) {
+        document.getElementById('resultsContent')
+          .scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    // ─── FAQ ACCORDION ─────────────────────────────
+
+    /**
+     * Alterna a visibilidade de um item do FAQ.
+     * @param {HTMLButtonElement} btn - Botão clicado
+     */
+    function toggleFaq(btn) {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+
+      /* Fecha todos os itens abertos */
+      document.querySelectorAll('.faq-item.open').forEach(el => {
+        el.classList.remove('open');
+        el.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+      });
+
+      /* Abre o item clicado (se não estava aberto) */
+      if (!isOpen) {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    }
+  </script>
+
+</body>
+</html>
